@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CarePoint – Hospital Management System</title>
+<link rel="stylesheet" href="style.css"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>"/>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="logo">🏥 <span>CarePoint</span></div>
+    <div class="tagline">Hospital Management System &nbsp;·&nbsp; DSA in C</div>
+    <div class="dsa-badges">
+      <span class="badge">Array</span>
+      <span class="badge">Linked&nbsp;List</span>
+      <span class="badge">Stack</span>
+      <span class="badge">Queue</span>
+      <span class="badge">Min-Heap</span>
+      <span class="badge">BST</span>
+      <span class="badge">Hash&nbsp;Table</span>
+      <span class="badge">Graph&nbsp;(BFS/DFS)</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══ STATS BAR ════════════════════════════════════════════════════════════ -->
+<section class="stats-bar" id="statsBar">
+  <div class="stat-card"><div class="stat-num" id="statTotal">–</div><div class="stat-label">Total Patients</div></div>
+  <div class="stat-card"><div class="stat-num" id="statActive">–</div><div class="stat-label">Active</div></div>
+  <div class="stat-card"><div class="stat-num" id="statEmergency">–</div><div class="stat-label">Emergency Stack</div></div>
+  <div class="stat-card"><div class="stat-num" id="statQueue">–</div><div class="stat-label">Regular Queue</div></div>
+  <div class="stat-card"><div class="stat-num" id="statPriorityQ">–</div><div class="stat-label">Priority Queue</div></div>
+  <div class="stat-card revenue"><div class="stat-num" id="statRevenue">–</div><div class="stat-label">Total Revenue (₹)</div></div>
+</section>
+
+<!-- ══ MAIN GRID ════════════════════════════════════════════════════════════ -->
+<main class="grid">
+
+  <!-- LEFT COLUMN -->
+  <div class="col">
+
+    <!-- Register Patient -->
+    <div class="card">
+      <h2>📋 Register Patient <span class="ds-tag">Array · BST · Hash</span></h2>
+      <form id="regForm" autocomplete="off">
+        <div class="form-row">
+          <input  id="rName"  type="text"   placeholder="Full Name"      required/>
+          <input  id="rAge"   type="number" placeholder="Age"  min="1" max="120" required/>
+        </div>
+        <div class="form-row">
+          <select id="rGender">
+            <option value="">Gender</option>
+            <option>Male</option><option>Female</option><option>Other</option>
+          </select>
+          <input  id="rPhone" type="tel" placeholder="Phone Number" required/>
+        </div>
+        <input  id="rCond"  type="text" placeholder="Medical Condition" required/>
+        <div class="form-row">
+          <select id="rPriority">
+            <option value="">Priority</option>
+            <option value="1">🔴 1 – Critical</option>
+            <option value="2">🟡 2 – Urgent</option>
+            <option value="3">🟢 3 – Normal</option>
+          </select>
+          <select id="rWard">
+            <option value="">Ward</option>
+            <option>ICU</option><option>Emergency</option>
+            <option>General</option><option>Pediatrics</option>
+            <option>Orthopedics</option><option>Cardiology</option>
+            <option>Neurology</option><option>Oncology</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Register Patient</button>
+      </form>
+    </div>
+
+    <!-- Patient Actions -->
+    <div class="card">
+      <h2>⚙️ Patient Actions</h2>
+      <div class="action-grid">
+        <div class="input-btn">
+          <input id="queueId" type="number" placeholder="Patient ID"/>
+          <button class="btn btn-blue" onclick="addToQueue()">➡ Regular Queue</button>
+        </div>
+        <div class="input-btn">
+          <input id="emergId" type="number" placeholder="Patient ID"/>
+          <button class="btn btn-red" onclick="addEmergency()">🚨 Emergency Stack</button>
+        </div>
+        <div class="input-btn">
+          <input id="priorId" type="number" placeholder="Patient ID"/>
+          <button class="btn btn-purple" onclick="addPriorityQueue()">⬆ Priority Queue</button>
+        </div>
+        <div class="input-btn">
+          <input id="dischargeId" type="number" placeholder="Patient ID"/>
+          <button class="btn btn-green" onclick="dischargePatient()">🏠 Discharge</button>
+        </div>
+        <div class="input-btn">
+          <input id="billId" type="number" placeholder="Patient ID"/>
+          <input id="billAmt" type="number" placeholder="Amount (₹)" style="max-width:140px"/>
+          <button class="btn btn-orange" onclick="addBill()">💳 Add Bill</button>
+        </div>
+      </div>
+      <div class="treat-row">
+        <button class="btn btn-red full" onclick="treatNext()">🏥 Treat Next (Emergency→Regular)</button>
+        <button class="btn btn-purple full" onclick="treatPriority()">⚡ Treat Highest Priority</button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="card">
+      <h2>🔍 Search <span class="ds-tag">BST · Linear · Binary · Hash</span></h2>
+      <div class="form-row">
+        <input id="searchId" type="number" placeholder="Patient ID (BST Search)"/>
+        <button class="btn btn-blue" onclick="searchById()">BST Search</button>
+        <button class="btn" onclick="binarySearchById()">Binary Search</button>
+      </div>
+      <div class="form-row">
+        <input id="searchName" type="text" placeholder="Name / Condition / Ward (Linear)"/>
+        <button class="btn btn-blue" onclick="searchByName()">Linear Search</button>
+        <button class="btn" onclick="hashLookup()">Hash Lookup</button>
+      </div>
+    </div>
+
+    <!-- Sort -->
+    <div class="card">
+      <h2>🔃 Sort Patients <span class="ds-tag">Merge·Quick·Heap·Insertion·Bubble</span></h2>
+      <div class="sort-row">
+        <button class="btn" onclick="sortBy('name')">Merge Sort (Name)</button>
+        <button class="btn" onclick="sortBy('age')">Quick Sort (Age)</button>
+        <button class="btn" onclick="sortBy('priority')">Heap Sort (Priority)</button>
+        <button class="btn" onclick="sortBy('id')">Insertion Sort (ID)</button>
+        <button class="btn" onclick="sortBy('bill')">Bubble Sort (Bill)</button>
+        <button class="btn" onclick="loadBST()">BST In-Order</button>
+      </div>
+    </div>
+
+  </div><!-- /LEFT -->
+
+  <!-- RIGHT COLUMN -->
+  <div class="col">
+
+    <!-- Waiting Lists -->
+    <div class="card">
+      <h2>⏳ Waiting Lists <span class="ds-tag">Stack · Queue · Min-Heap</span></h2>
+      <div class="tabs" id="waitingTabs">
+        <button class="tab active" onclick="switchTab('emergency')">🚨 Emergency Stack</button>
+        <button class="tab" onclick="switchTab('queue')">🕐 Regular Queue</button>
+        <button class="tab" onclick="switchTab('priority')">⚡ Priority Queue</button>
+      </div>
+      <div id="waitingContent" class="patient-list"></div>
+      <button class="btn btn-sm" style="margin-top:8px" onclick="loadWaiting()">↺ Refresh</button>
+    </div>
+
+    <!-- Ward Graph -->
+    <div class="card">
+      <h2>🗺️ Ward Network <span class="ds-tag">Graph · BFS · DFS</span></h2>
+      <div class="form-row">
+        <select id="bfsWard">
+          <option value="ICU">ICU</option><option value="Emergency">Emergency</option>
+          <option value="General">General</option><option value="Pediatrics">Pediatrics</option>
+          <option value="Cardiology">Cardiology</option><option value="Neurology">Neurology</option>
+          <option value="Oncology">Oncology</option><option value="Orthopedics">Orthopedics</option>
+        </select>
+        <button class="btn btn-blue" onclick="runBFS()">BFS from Ward</button>
+        <button class="btn" onclick="runDFS()">DFS Traversal</button>
+        <button class="btn" onclick="loadWards()">Show All Wards</button>
+      </div>
+      <div id="wardContent" class="ward-grid"></div>
+    </div>
+
+    <!-- Results panel -->
+    <div class="card" id="resultsCard">
+      <h2>📊 Results</h2>
+      <div id="results" class="results-area"><p class="hint">Results will appear here…</p></div>
+    </div>
+
+  </div><!-- /RIGHT -->
+</main>
+
+<!-- ══ PATIENT TABLE ════════════════════════════════════════════════════════ -->
+<section class="card full-card">
+  <div class="table-header">
+    <h2>🗃️ All Patients <span class="ds-tag">Array Store</span></h2>
+    <button class="btn btn-sm" onclick="loadPatients()">↺ Refresh</button>
+  </div>
+  <div class="table-wrap">
+    <table id="patientTable">
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Age</th><th>Gender</th>
+          <th>Condition</th><th>Priority</th><th>Ward</th><th>Status</th>
+          <th>Bill (₹)</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="patientBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ DSA LEGEND ═══════════════════════════════════════════════════════════ -->
+<section class="card full-card dsa-legend">
+  <h2>📚 DSA Concepts Used (Implemented in C)</h2>
+  <div class="legend-grid">
+    <div class="legend-item">
+      <div class="legend-icon">📦</div>
+      <div><strong>Array</strong><br/>Patient record store. O(1) access, O(n) search.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🔗</div>
+      <div><strong>Doubly Linked List</strong><br/>Audit log history. O(1) insert at tail, O(n) traversal.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">📚</div>
+      <div><strong>Stack (LIFO)</strong><br/>Emergency patients. Last-in first-out. O(1) push/pop.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🚶</div>
+      <div><strong>Circular Queue (FIFO)</strong><br/>Regular waiting list. O(1) enqueue/dequeue.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">⛰️</div>
+      <div><strong>Min-Heap</strong><br/>Priority treatment queue. O(log n) insert/extract-min.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🌳</div>
+      <div><strong>BST</strong><br/>Patient ID index. O(log n) average search/insert.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">#️⃣</div>
+      <div><strong>Hash Table</strong><br/>Name lookup. O(1) average. Separate chaining, djb2 hash.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🕸️</div>
+      <div><strong>Graph (Adj. List)</strong><br/>Ward adjacency. BFS and DFS traversal.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">📐</div>
+      <div><strong>Merge Sort</strong><br/>Sort by name. Stable, O(n log n).</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">⚡</div>
+      <div><strong>Quick Sort</strong><br/>Sort by age. Avg O(n log n), in-place.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🏔️</div>
+      <div><strong>Heap Sort</strong><br/>Sort by priority. O(n log n), in-place.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🔢</div>
+      <div><strong>Insertion Sort</strong><br/>Sort by ID. Best-case O(n) for nearly sorted.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🫧</div>
+      <div><strong>Bubble Sort</strong><br/>Sort by bill (demo). O(n²) worst case.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🔭</div>
+      <div><strong>Linear Search</strong><br/>Name/condition/ward search. O(n).</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🎯</div>
+      <div><strong>Binary Search</strong><br/>ID search on sorted array. O(log n).</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TOAST ═════════════════════════════════════════════════════════════════ -->
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

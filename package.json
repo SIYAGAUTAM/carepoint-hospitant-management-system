@@ -1,0 +1,18 @@
+{
+  "name": "carepoint-hospital-management-system",
+  "version": "2.0.0",
+  "description": "DSA Hospital Management System – C core (Array, Linked List, Stack, Queue, Heap, BST, Hash Table, Graph) with Express web bridge",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:windows": "node server.js",
+    "compile": "gcc -Wall -O2 -o core/hospital core/hospital.c",
+    "compile:windows": "gcc -Wall -O2 -o core/hospital.exe core/hospital.c"
+  },
+  "keywords": ["hospital", "DSA", "C", "data-structures", "algorithms"],
+  "author": "SIYAGAUTAM",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

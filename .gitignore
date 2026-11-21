@@ -1,0 +1,9 @@
+hospital.dat
+hospital_log.txt
+core/hospital.exe
+core/hospital
+node_modules/
+npm-debug.log*
+*.o
+*.out
+.env
